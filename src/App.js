@@ -168,13 +168,12 @@ const addBlockToGrid = ({ block, x, y, rotation, grid }) => {
   for (let j = 0; j < blockGrid.length; j++) {
     for (let i = 0; i < blockGrid[0].length; i++) {
       if (blockGrid[j][i] && newGrid[y + j]) {
-         newGrid[y + j][x + i] = colors[blocks.indexOf(block)];
+        newGrid[y + j][x + i] = colors[blocks.indexOf(block)];
       }
     }
   }
   return newGrid;
 };
-
 
 const BLOCK_WIDTH = 50;
 const SCREEN_WIDTH = 500;
@@ -219,6 +218,32 @@ class App extends Component {
       }
     };
     setInterval(tick, 10);
+    window.addEventListener("keydown", e => {
+      const { block, x, y, rotation, grid } = this.state;
+      switch (e.keyCode) {
+        case 37: // left
+          if (!isCollision({ block, x: x - 1, y, rotation, grid })) {
+            this.setState({ x: x - 1 });
+          }
+          return;
+        case 38: // up
+          const rightRotation = (rotation + 1) % 4;
+          if (!isCollision({ block, x, y, rotation: rightRotation, grid })) {
+            this.setState({ rotation: rightRotation });
+          }
+          return;
+        case 39: // right
+          if (!isCollision({ block, x: x + 1, y, rotation, grid })) {
+            this.setState({ x: x + 1 });
+          }
+          return;
+        case 40: // down
+          if (!isCollision({ block, x, y: y + 1, rotation, grid })) {
+            this.setState({ y: y + 1 });
+          }
+          return;
+      }
+    });
   }
 
   render() {
