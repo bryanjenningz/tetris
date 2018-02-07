@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 
-// const colors = ["red", "orange", "yellow", "green", "blue", "purple"];
+const colors = ["red", "orange", "yellow", "green", "blue", "purple"];
 const blocks = ["7", "L", "S", "Z", "O", "I"];
 const range = (lo, hi) => Array.from({ length: hi - lo + 1 }, (_, i) => lo + i);
 const randomInt = (lo, hi) => Math.floor(lo + Math.random() * (hi - lo + 1));
@@ -81,7 +81,7 @@ class App extends Component {
   }
 
   render() {
-    const { grid } = this.state;
+    const { grid, block, x, y } = this.state;
     return (
       <div
         style={{
@@ -109,6 +109,16 @@ class App extends Component {
             ))}
           </div>
         ))}
+        <div
+          style={{
+            position: "absolute",
+            left: x * BLOCK_WIDTH,
+            top: y * BLOCK_WIDTH,
+            width: BLOCK_WIDTH,
+            height: BLOCK_WIDTH,
+            background: colors[blocks.indexOf(block)]
+          }}
+        />
       </div>
     );
   }
