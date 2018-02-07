@@ -2,10 +2,123 @@ import React, { Component } from "react";
 import "./App.css";
 
 const colors = ["red", "orange", "yellow", "green", "blue", "purple"];
-const blocks = ["7", "L", "S", "Z", "O", "I"];
+const blocks = ["R", "L", "S", "Z", "O", "I"];
 const range = (lo, hi) => Array.from({ length: hi - lo + 1 }, (_, i) => lo + i);
 const randomInt = (lo, hi) => Math.floor(lo + Math.random() * (hi - lo + 1));
 const randomChoice = choices => choices[randomInt(0, choices.length - 1)];
+
+const blockRotation = ({ block, rotation }) => {
+  switch (block) {
+    case "R":
+      return [
+        [
+          [true, true, true, false],
+          [false, false, true, false],
+          [false, false, false, false],
+          [false, false, false, false]
+        ],
+        [
+          [false, true, false, false],
+          [false, true, false, false],
+          [true, true, false, false],
+          [false, false, false, false]
+        ],
+        [
+          [true, false, false, false],
+          [true, true, true, false],
+          [false, false, false, false],
+          [false, false, false, false]
+        ],
+        [
+          [true, true, false, false],
+          [true, false, false, false],
+          [true, false, false, false],
+          [false, false, false, false]
+        ]
+      ][rotation];
+    case "L":
+      return [
+        [
+          [true, true, true, false],
+          [true, false, false, false],
+          [false, false, false, false],
+          [false, false, false, false]
+        ],
+        [
+          [true, true, false, false],
+          [false, true, false, false],
+          [false, true, false, false],
+          [false, false, false, false]
+        ],
+        [
+          [false, false, true, false],
+          [true, true, true, false],
+          [false, false, false, false],
+          [false, false, false, false]
+        ],
+        [
+          [true, false, false, false],
+          [true, false, false, false],
+          [true, true, false, false],
+          [false, false, false, false]
+        ]
+      ][rotation];
+    case "S": {
+      const horizontalS = [
+        [true, true, false, false],
+        [false, true, true, false],
+        [false, false, false, false],
+        [false, false, false, false]
+      ];
+      const verticalS = [
+        [false, true, false, false],
+        [true, true, false, false],
+        [true, false, false, false],
+        [false, false, false, false]
+      ];
+      return [horizontalS, verticalS, horizontalS, verticalS][rotation];
+    }
+    case "Z": {
+      const horizontalZ = [
+        [true, true, false, false],
+        [false, true, true, false],
+        [false, false, false, false],
+        [false, false, false, false]
+      ];
+      const verticalZ = [
+        [false, true, false, false],
+        [true, true, false, false],
+        [true, false, false, false],
+        [false, false, false, false]
+      ];
+      return [horizontalZ, verticalZ, horizontalZ, verticalZ][rotation];
+    }
+    case "O":
+      return [
+        [true, true, false, false],
+        [true, true, false, false],
+        [false, false, false, false],
+        [false, false, false, false]
+      ];
+    case "I": {
+      const horizontalI = [
+        [true, true, true, true],
+        [false, false, false, false],
+        [false, false, false, false],
+        [false, false, false, false]
+      ];
+      const verticalI = [
+        [true, false, false, false],
+        [true, false, false, false],
+        [true, false, false, false],
+        [true, false, false, false]
+      ];
+      return [verticalI, horizontalI, verticalI, horizontalI][rotation];
+    }
+    default:
+      throw new Error(`Invalid block: ${block}`);
+  }
+};
 
 const scoreToDropTime = score => {
   const minScoreToTime = {
