@@ -37,17 +37,15 @@ const isCollision = ({ block, x, y, rotation, grid }) => {
   return x < 0 || x >= width || y >= width;
 };
 
-const addBlockToGrid = ({ block, x, y, rotation, grid }) => {
-  return [
-    ...grid.slice(0, y),
-    [
-      ...grid[y].slice(0, x),
-      blocks[colors.indexOf(block)],
-      ...grid[y].slice(x + 1)
-    ],
-    ...grid.slice(y + 1)
-  ];
-};
+const addBlockToGrid = ({ block, x, y, rotation, grid }) => [
+  ...grid.slice(0, y),
+  [
+    ...grid[y].slice(0, x),
+    colors[blocks.indexOf(block)],
+    ...grid[y].slice(x + 1)
+  ],
+  ...grid.slice(y + 1)
+];
 
 const BLOCK_WIDTH = 50;
 const SCREEN_WIDTH = 500;
@@ -76,11 +74,12 @@ class App extends Component {
           const fullRows = addedGrid.filter(row => row.every(color => color));
           const fullRowsRemovedGrid = [
             ...fullRows.map(() => range(0, 9).map(() => null)),
-            ...addedGrid.filter(row => row.some(color => !color))
+            ...addedGrid.filter(row => !row.every(color => color))
           ];
           this.setState({
             x: INITIAL_X,
             y: INITIAL_Y,
+            block: randomChoice(blocks),
             score: score + fullRows.length,
             lastDropTime: Date.now(),
             grid: fullRowsRemovedGrid
