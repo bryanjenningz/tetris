@@ -160,15 +160,21 @@ const isCollision = ({ block, x, y, rotation, grid }) => {
   );
 };
 
-const addBlockToGrid = ({ block, x, y, rotation, grid }) => [
-  ...grid.slice(0, y),
-  [
-    ...grid[y].slice(0, x),
-    colors[blocks.indexOf(block)],
-    ...grid[y].slice(x + 1)
-  ],
-  ...grid.slice(y + 1)
-];
+const copy = x => JSON.parse(JSON.stringify(x));
+
+const addBlockToGrid = ({ block, x, y, rotation, grid }) => {
+  const newGrid = copy(grid);
+  const blockGrid = blockRotation({ block, rotation });
+  for (let j = 0; j < blockGrid.length; j++) {
+    for (let i = 0; i < blockGrid[0].length; i++) {
+      if (blockGrid[j][i] && newGrid[y + j]) {
+         newGrid[y + j][x + i] = colors[blocks.indexOf(block)];
+      }
+    }
+  }
+  return newGrid;
+};
+
 
 const BLOCK_WIDTH = 50;
 const SCREEN_WIDTH = 500;
