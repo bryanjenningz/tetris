@@ -147,7 +147,17 @@ const scoreToDropTime = score => {
 
 const isCollision = ({ block, x, y, rotation, grid }) => {
   const width = Math.round(SCREEN_WIDTH / BLOCK_WIDTH);
-  return x < 0 || x >= width || y >= width || grid[y][x];
+  const blockGrid = blockRotation({ block, rotation });
+  return blockGrid.some((row, j) =>
+    row.some(
+      (isShown, i) =>
+        isShown &&
+        (x + i < 0 ||
+          x + i >= width ||
+          y + j >= width ||
+          (grid[y + j] && grid[y + j][x + i]))
+    )
+  );
 };
 
 const addBlockToGrid = ({ block, x, y, rotation, grid }) => [
