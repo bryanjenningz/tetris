@@ -32,9 +32,22 @@ const scoreToDropTime = score => {
   return dropTime;
 };
 
-const isCollision = ({ block, x, y, rotation, grid }) => {};
+const isCollision = ({ block, x, y, rotation, grid }) => {
+  const width = Math.round(SCREEN_WIDTH / BLOCK_WIDTH);
+  return x < 0 || x >= width || y >= width;
+};
 
-const addBlockToGrid = ({ block, x, y, rotation, grid }) => {};
+const addBlockToGrid = ({ block, x, y, rotation, grid }) => {
+  return [
+    ...grid.slice(0, y),
+    [
+      ...grid[y].slice(0, x),
+      blocks[colors.indexOf(block)],
+      ...grid[y].slice(x + 1)
+    ],
+    ...grid.slice(y + 1)
+  ];
+};
 
 const BLOCK_WIDTH = 50;
 const SCREEN_WIDTH = 500;
