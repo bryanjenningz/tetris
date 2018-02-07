@@ -206,7 +206,8 @@ class App extends Component {
   }
 
   render() {
-    const { grid, block, x, y } = this.state;
+    const { grid, block, x, y, rotation } = this.state;
+    const blockGrid = blockRotation({ block, rotation });
     return (
       <div
         style={{
@@ -234,16 +235,28 @@ class App extends Component {
             ))}
           </div>
         ))}
-        <div
-          style={{
-            position: "absolute",
-            left: x * BLOCK_WIDTH,
-            top: y * BLOCK_WIDTH,
-            width: BLOCK_WIDTH,
-            height: BLOCK_WIDTH,
-            background: colors[blocks.indexOf(block)]
-          }}
-        />
+        {blockGrid.map((row, j) => (
+          <div key={j}>
+            {row.map(
+              (isShown, i) =>
+                isShown ? (
+                  <div
+                    key={i}
+                    style={{
+                      position: "absolute",
+                      left: (i + x) * BLOCK_WIDTH,
+                      top: (j + y) * BLOCK_WIDTH,
+                      width: BLOCK_WIDTH,
+                      height: BLOCK_WIDTH,
+                      background: colors[blocks.indexOf(block)]
+                    }}
+                  />
+                ) : (
+                  <span key={i} />
+                )
+            )}
+          </div>
+        ))}
       </div>
     );
   }
