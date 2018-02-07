@@ -57,7 +57,7 @@ class App extends Component {
     const tick = () => {
       const { lastDropTime, score, x, y, block, rotation, grid } = this.state;
       const dropTime = scoreToDropTime(score);
-      if (lastDropTime + dropTime >= Date.now()) {
+      if (lastDropTime + dropTime <= Date.now()) {
         if (isCollision({ block, x, y: y + 1, rotation, grid })) {
           const addedGrid = addBlockToGrid({ block, x, y, rotation, grid });
           const fullRows = addedGrid.filter(row => row.every(color => color));
