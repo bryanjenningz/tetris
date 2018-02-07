@@ -34,7 +34,7 @@ const scoreToDropTime = score => {
 
 const isCollision = ({ block, x, y, rotation, grid }) => {
   const width = Math.round(SCREEN_WIDTH / BLOCK_WIDTH);
-  return x < 0 || x >= width || y >= width;
+  return x < 0 || x >= width || y >= width || grid[y][x];
 };
 
 const addBlockToGrid = ({ block, x, y, rotation, grid }) => [
