@@ -242,6 +242,8 @@ class App extends Component {
             this.setState({ y: y + 1 });
           }
           return;
+        default:
+          return;
       }
     });
   }
